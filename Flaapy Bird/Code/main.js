@@ -1,14 +1,16 @@
-var canvas, contexto, LARGURA, ALTURA, contexto, frames = 0, estadoAtual, velocidade = 3, faseAtual = 1, quantosNiveis = 15, MultiplicadorparapassarFase = 5
+const quantosNiveis = 15, MultiplicadorparapassarFase = 5
+let canvas, contexto, frames = 0, estadoAtual, velocidade = 6, faseAtual = 1 
+var LARGURA, ALTURA
 
-var estados = {
+let estados = {
     jogar: 0,
     jogando: 1,
     perdeu: 2
 }
 
-var chao = {
-    y: 500,
-    altura: 100,
+let chao = {
+    y: 550,
+    altura: 50,
     cor: '#ffdf70',
     
     desenha: function(){
@@ -17,7 +19,7 @@ var chao = {
     }
 }
 
-var bloco = {
+let bloco = {
     x: 50,
     y: chao.y / 2 - chao.altura / 2,
     altura: 40,
@@ -51,8 +53,6 @@ var bloco = {
         this.velocidade = 0
         this.score = 0
         this.vidas = 3
-        velocidade = 3
-        faseAtual = 1
     },
 
     desenha: function(){
@@ -61,21 +61,27 @@ var bloco = {
     }
 }
 
-var obstaculos = {
+let obstaculos = {
     _obs: [],
     _scored: false,
     cores: ["#ffbc1c", "#ff1c1c", "#ff85e1", "#52a7ff", "#78ff5d"],
     tempoInsere: 0,
+    alturaobsrandom: 280,
+    espacoobsrandom: 250,
 
     insere: function(){
         this._obs.push({
             x: LARGURA,
             largura: Math.floor(30 + Math.random() * 20),
-            altura: Math.floor(10 + Math.random() * 180),
+            altura: Math.floor(10 + Math.random() * this.alturaobsrandom),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
 
-        this.tempoInsere = Math.floor(50 + Math.random() * 50)
+        this.tempoInsere = Math.floor(40 + Math.random() * 20)
+    },
+
+    condicaoIfColisao: function(i) {
+        return !bloco.colidindo && (bloco.x < this._obs[i].x + this._obs[i].largura && bloco.x + bloco.largura > this._obs[i].x && (bloco.y + bloco.altura >= chao.y - this._obs[i].altura || bloco.y <= chao.y - (this._obs[i].altura + this.espacoobsrandom)) || bloco.y == chao.y - bloco.altura || bloco.y == 0)
     },
 
     atualiza: function(){
@@ -85,27 +91,29 @@ var obstaculos = {
             this.tempoInsere--
         }
 
+        // mudança de nível, pontuação, velocidade, e a mudança de estados.perdeu  
         for(var i = 0, tam = this._obs.length; i < tam; i++){
             var obs = this._obs[i]
             obs.x -= velocidade
 
-            if(!bloco.colidindo && (bloco.x < obs.x + obs.largura && bloco.x + bloco.largura > obs.x && (bloco.y + bloco.altura >= chao.y - obs.altura || bloco.y <= chao.y - (obs.altura + 300)) || bloco.y == chao.y - bloco.altura || bloco.y == 0)){
+            if(this.condicaoIfColisao(i)){
                 bloco.colidindo = true
 
                 setTimeout(function(){
                     bloco.colidindo = false
                 }, 700)
+
                 if (bloco.vidas >= 1){
                     bloco.vidas--
                 }else{
                     estadoAtual = estados.perdeu
                 }
+
             }else if(obs.x + obs.largura < bloco.x && !obs._scored){
                 bloco.score++
                 obs._scored = true
                 if(faseAtual < quantosNiveis && bloco.score == faseAtual * MultiplicadorparapassarFase){
-                    faseAtual++
-                    velocidade += 3
+                    passardeFase()
                 }
             }else if(obs.x <= -obs.largura){
                 this._obs.splice(i, 1)
@@ -115,8 +123,10 @@ var obstaculos = {
         }
     },
 
-    limpar: function(){
+    reset: function(){
         this._obs = []
+        this.espacoobsrandom = 250
+        this.alturaobsrandom = 280
     },
 
     desenha: function(){
@@ -124,7 +134,7 @@ var obstaculos = {
             var obs = this._obs[i]
             contexto.fillStyle = obs.cor
             contexto.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura)
-            contexto.fillRect(obs.x, 0, obs.largura, chao.y - (obs.altura + 300))
+            contexto.fillRect(obs.x, 0, obs.largura, chao.y - (obs.altura + this.espacoobsrandom))
         }
     }
 }
@@ -165,11 +175,10 @@ function clique(event){
         bloco.pular()
     }else if(estadoAtual == estados.jogar){
         estadoAtual = estados.jogando
-        obstaculos.limpar()
+        obstaculos.reset
     }else if(estadoAtual == estados.perdeu){
         estadoAtual = estados.jogar
-        obstaculos.limpar()
-        bloco.reset()
+        reset()
     }
     
 }
@@ -179,6 +188,20 @@ function configCanvas(){
     canvas.width = LARGURA
     canvas.height = ALTURA
     canvas.style.border = '1px solid #000'
+}
+
+function passardeFase(){
+    faseAtual++
+   // velocidade += 6
+    obstaculos.alturaobsrandom += 25
+    obstaculos.espacoobsrandom -= 25
+}
+
+function reset(){
+    velocidade = 3
+    faseAtual = 1
+    bloco.reset()
+    obstaculos.reset()
 }
 
 function main (){
