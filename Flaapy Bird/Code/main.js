@@ -58,7 +58,7 @@ var obstaculos = {
         this._obs.push({
             x: LARGURA,
             largura: Math.floor(30 + Math.random() * 20),
-            altura: Math.floor(30 + Math.random() * 150),
+            altura: Math.floor(10 + Math.random() * 350),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
 
@@ -75,6 +75,14 @@ var obstaculos = {
         for(var i = 0, tam = this._obs.length; i < tam; i++){
             var obs = this._obs[i]
             obs.x -= velocidade
+
+            if(bloco.x < obs.x + obs.largura && bloco.x + bloco.largura >= obs.x && (bloco.y + bloco.altura >= chao.y - obs.altura || bloco.y <= chao.y - (obs.altura + 200)) ){
+                estadoAtual = estados.perdeu
+            }else if(obs.x <= -obs.largura){
+                this._obs.splice(i, 1)
+                tam--
+                i--
+            }
         }
     },
 
@@ -102,7 +110,11 @@ function roda(){
 function atualiza(){
     frames++
     obstaculos.atualiza()
-    bloco.atualiza()
+    if (estadoAtual == estados.jogando){
+        bloco.atualiza()
+    }else if( estadoAtual == estados.perdeu){
+        obstaculos.limpar()
+    }
 }
 
 function desenha(){
@@ -111,11 +123,20 @@ function desenha(){
 
     chao.desenha()
     bloco.desenha()
-    obstaculos.desenha()
+    if(estadoAtual == estados.jogando){
+        obstaculos.desenha()
+    }
 }
 
-function clique(evento){
-    bloco.pular()
+function clique(event){
+    if(estadoAtual == estados.jogando){
+        bloco.pular()
+    }else if(estadoAtual == estados.jogar){
+        estadoAtual = estados.jogando
+    }else if(estadoAtual == estados.perdeu){
+        estadoAtual = estados.jogar
+    }
+    
 }
 
 function configCanvas(){
