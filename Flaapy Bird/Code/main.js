@@ -1,5 +1,5 @@
-const quantosNiveis = 15, MultiplicadorparapassarFase = 5
-let canvas, contexto, frames = 0, estadoAtual, velocidade = 6, faseAtual = 1 
+const quantosNiveis = 10, MultiplicadorparapassarFase = 5
+let canvas, contexto, frames = 0, estadoAtual, velocidade = 3, faseAtual = 1 
 var LARGURA, ALTURA
 
 let estados = {
@@ -77,7 +77,7 @@ let obstaculos = {
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
 
-        this.tempoInsere = Math.floor(40 + Math.random() * 20)
+        this.tempoInsere = Math.floor(60 + Math.random() * 20)
     },
 
     condicaoIfColisao: function(i) {
@@ -175,7 +175,7 @@ function clique(event){
         bloco.pular()
     }else if(estadoAtual == estados.jogar){
         estadoAtual = estados.jogando
-        obstaculos.reset
+        obstaculos.reset()
     }else if(estadoAtual == estados.perdeu){
         estadoAtual = estados.jogar
         reset()
