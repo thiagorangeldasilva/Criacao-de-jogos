@@ -1,4 +1,4 @@
-const quantosNiveis = 10, MultiplicadorparapassarFase = 5
+const quantosNiveis = 7, MultiplicadorparapassarFase = 5
 let canvas, contexto, frames = 0, estadoAtual, velocidade = 3, faseAtual = 1 
 var LARGURA, ALTURA
 
@@ -68,6 +68,7 @@ let obstaculos = {
     tempoInsere: 0,
     alturaobsrandom: 280,
     espacoobsrandom: 250,
+    distanciaTempoInste: 60,
 
     insere: function(){
         this._obs.push({
@@ -76,8 +77,7 @@ let obstaculos = {
             altura: Math.floor(10 + Math.random() * this.alturaobsrandom),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
-
-        this.tempoInsere = Math.floor(60 + Math.random() * 20)
+        this.tempoInsere = Math.floor(this.distanciaTempoInste + Math.random() * 20)
     },
 
     condicaoIfColisao: function(i) {
@@ -105,6 +105,10 @@ let obstaculos = {
 
                 if (bloco.vidas >= 1){
                     bloco.vidas--
+                    if (bloco.score > 0){
+                        bloco.score--
+                    }
+                    obs._scored = true 
                 }else{
                     estadoAtual = estados.perdeu
                 }
@@ -124,6 +128,7 @@ let obstaculos = {
     },
 
     reset: function(){
+        this.distanciaTempoInste = 60
         this._obs = []
         this.espacoobsrandom = 250
         this.alturaobsrandom = 280
@@ -175,7 +180,7 @@ function clique(event){
         bloco.pular()
     }else if(estadoAtual == estados.jogar){
         estadoAtual = estados.jogando
-        obstaculos.reset()
+        reset()
     }else if(estadoAtual == estados.perdeu){
         estadoAtual = estados.jogar
         reset()
@@ -192,7 +197,10 @@ function configCanvas(){
 
 function passardeFase(){
     faseAtual++
-   // velocidade += 6
+    if(bloco.score % 10 == 0){
+        bloco.vidas++
+    }
+    obstaculos.distanciaTempoInste += 5
     obstaculos.alturaobsrandom += 25
     obstaculos.espacoobsrandom -= 25
 }
