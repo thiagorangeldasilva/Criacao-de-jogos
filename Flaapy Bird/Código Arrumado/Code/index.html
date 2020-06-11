@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Minha engine</title>
+    <script src="scripts/canvas.js"></script>
+    <script src="scripts/clique.js"></script>
+    <script src="scripts/atualiza.js"></script>
+    <script src="scripts/desenha.js"></script>
+    <script src="scripts/passadefase.js"></script>
+    <style>
+        canvas {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const MaxLevel = 7, MultiplicadoParaPassarFase = 5
+        let contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1
+        var LARGURA, ALTURA
+
+        let estados = {
+            jogar: 0,
+            jogando: 1,
+            perdeu: 2
+        }
+
+        let chao = {
+            y: 550,
+            altura: 50,
+            cor: '#ffdf70',
+
+            desenha (){
+                contexto.fillStyle = this.cor
+                contexto.fillRect(0, this.y, LARGURA, this.altura)
+            }
+        }
+
+        let bloco = {
+            x: 50, 
+            y: chao.y / 2 - chao.altura / 2,
+            altura: 40,
+            largura: 40,
+            cor: '#ff1e4e',
+            gravidade: 0.2,
+            velocidade: 0,
+            forcaDoPulo: 5,
+            score: 0,
+            vidas: 3,
+            colindindo: false,
+
+            atualiza(){
+                this.velocidade += this.gravidade
+                this.y += this.velocidade
+
+                if(this.y > chao.y - this.altura){
+                    this.y = chao.y - this.altura
+                }else if(this.y < 0){
+                    this.y = 0
+                    this.velocidade = 0
+                }
+            },
+
+            pular(){
+                this.velocidade = -this.forcaDoPulo
+            },         
+            
+            reset(){
+                this.y = chao.y / 2 - chao.altura / 2,
+                this.velocidade = 0
+                this.score = 0
+                this.vidas = 3
+            },
+
+            desenha(){
+                contexto.fillStyle = this.cor
+                contexto.fillRect(this.x, this.y, this.largura, this.altura)
+            }
+        }
+
+        let obstaculo = {
+            _obs: [],
+            _scored: false,
+            cores: ["#ffbc1c", "#ff1c1c", "#ff85e1", "#52a7ff", "#78ff5d"],
+            tempoInsere: 0,
+            alturaObsRandom: 280,
+            espacoObsRandom: 250,
+            distanciaTempoInsere: 60,
+
+            insere(){
+                this._obs.push({
+                    x: LARGURA,
+                    largura: Math.floor(30 + Math.random() * 20),
+                    altura: Math.floor(10 + Math.random() * this.alturaObsRandom),
+                    cor: this.cores[Math.floor(this.cores.length * Math.random())]   
+                })
+                this.tempoInsere = Math.floor(this.distanciaTempoInsere + Math.random * 20)
+            },
+
+            condicaoIfColisao(indice){
+                return !bloco.colindindo && (bloco.x < this._obs[indice].x + this._obs[indice].largura && bloco.x + bloco.largura > this._obs[indice].x && (bloco.y + bloco.altura >= chao.y - this._obs[indice].altura || bloco.y <= chao.y - (this._obs[indice].altura + this.espacoObsRandom)) || bloco.y == chao.y - bloco.altura || bloco.y == 0)
+            },
+
+            atualiza(){
+                if(this.tempoInsere == 0){
+                    this.insere()
+                }else{
+                    this.tempoInsere--
+                }
+
+                // Mudança de nível, Pontuação, Velocidade, e a Mudança de estados.perdeu
+                for(let i = 0, tam = this._obs.length; i < tam; i++){
+                    var obs = this._obs[i]
+                    obs.x -= velocidade
+
+                    if(this.condicaoIfColisao(i)){
+                        bloco.colindindo = true
+
+                        setTimeout(function(){
+                            bloco.colindindo = false
+                        }, 700)
+
+                        if(bloco.vidas >= 1){
+                            bloco.vidas--
+                            if(bloco.score > 0){
+                                bloco.score--
+                            }
+                            obs._scored = true
+                        }else{
+                            estadoAtual = estados.perdeu
+                        }
+                    }else if(obs.x + obs.largura < bloco.x && !obs._scored){
+                        bloco.score++
+                        obs._scored = true
+                        if(faseAtual < MaxLevel && bloco.score == faseAtual * MultiplicadoParaPassarFase){
+                            passardeFase()
+                        }
+                    }else if(obs.x <= -obs.largura){
+                        this._obs.splice(i, 1)
+                        tam--
+                        i--
+                    }
+                }
+            },
+
+            reset(){
+                this._obs = []
+                this.distanciaTempoInste = 60
+                this.espacoobsrandom = 250
+                this.alturaobsrandom = 280
+            },
+
+            desenha(){
+                for(let i = 0, tam = this._obs.length; i < tam; i++){
+                    let obs = this._obs[i]
+                    contexto.fillStyle = obs.cor
+                    contexto.fillRect(obs.x, obs.y - obs.altura, obs.largura, obs.altura)
+                    contexto.fillRect(obs.x, 0, obs.largura, chao.y - (obs.altura + this.espacoObsRandom))
+                }
+            }
+
+        }
+
+        function roda(){
+            atualiza()
+            desenha()
+
+            window.requestAnimationFrame(roda)
+        }
+
+        function reset(){
+            velocidade = 3
+            faseAtual = 1
+            bloco.reset()
+            obstaculo.reset()
+        }
+
+        function main(){
+            ALTURA = window.innerHeight
+            LARGURA = window.innerWidth
+
+            if (LARGURA >= 500) {
+				LARGURA = 600;
+				ALTURA = 600;
+            }
+
+            let canvas = new configCanvas()
+
+            contexto = canvas.create.getContext("2d")
+            document.body.appendChild(canvas.create)
+
+            document.addEventListener("mousedown", clique)
+            
+            estadoAtual = estados.jogar
+            
+            roda()
+        }
+        main()
+    </script>
+</body>
+</html>
