@@ -153,9 +153,9 @@ function roda(){
 
 function atualiza(){
     frames++
-    obstaculos.atualiza()
     if (estadoAtual == estados.jogando){
         bloco.atualiza()
+        obstaculos.atualiza()
     }
 }
 

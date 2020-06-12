@@ -22,7 +22,7 @@
 <body>
     <script>
         const MaxLevel = 7, MultiplicadoParaPassarFase = 5
-        let contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1
+        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1
         var LARGURA, ALTURA
 
         let estados = {
@@ -100,7 +100,7 @@
                     altura: Math.floor(10 + Math.random() * this.alturaObsRandom),
                     cor: this.cores[Math.floor(this.cores.length * Math.random())]   
                 })
-                this.tempoInsere = Math.floor(this.distanciaTempoInsere + Math.random * 20)
+                this.tempoInsere = Math.floor(this.distanciaTempoInsere + Math.random() * 20)
             },
 
             condicaoIfColisao(indice){
@@ -160,7 +160,7 @@
                 for(let i = 0, tam = this._obs.length; i < tam; i++){
                     let obs = this._obs[i]
                     contexto.fillStyle = obs.cor
-                    contexto.fillRect(obs.x, obs.y - obs.altura, obs.largura, obs.altura)
+                    contexto.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura)
                     contexto.fillRect(obs.x, 0, obs.largura, chao.y - (obs.altura + this.espacoObsRandom))
                 }
             }
@@ -170,6 +170,7 @@
         function roda(){
             atualiza()
             desenha()
+            start()
 
             window.requestAnimationFrame(roda)
         }
@@ -190,7 +191,7 @@
 				ALTURA = 600;
             }
 
-            let canvas = new configCanvas()
+            canvas = new configCanvas()
 
             contexto = canvas.create.getContext("2d")
             document.body.appendChild(canvas.create)
