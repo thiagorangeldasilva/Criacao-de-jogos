@@ -23,7 +23,7 @@
 <body>
     <script>
         const MaxLevel = 7, MultiplicadoParaPassarFase = 5
-        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1, imagem
+        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1, imagem, imgEstrela, imgGamerover
         var LARGURA, ALTURA
 
         let estados = {
@@ -54,19 +54,20 @@
         let bloco = {
             x: 50, 
             y: chao.y / 2 - chao.altura / 2,
-            altura: 40,
-            largura: 40,
-            cor: '#ff1e4e',
+            altura: playerBloco.altura,
+            largura: playerBloco.largura,
             gravidade: 0.2,
             velocidade: 0,
             forcaDoPulo: 5,
+            rotacao: 0,
             score: 0,
-            vidas: 3,
+            vidas: 0,
             colindindo: false,
 
             atualiza(){
                 this.velocidade += this.gravidade
                 this.y += this.velocidade
+                this.rotacao += Math.PI / 180 * velocidade
 
                 if(this.y > chao.y - this.altura){
                     this.y = chao.y - this.altura
@@ -84,12 +85,15 @@
                 this.y = chao.y / 2 - chao.altura / 2,
                 this.velocidade = 0
                 this.score = 0
-                this.vidas = 3
+                this.vidas = 0
             },
 
             desenha(){
-                contexto.fillStyle = this.cor
-                contexto.fillRect(this.x, this.y, this.largura, this.altura)
+                contexto.save()
+                contexto.translate(this.x + this.largura / 2, this.y + this.altura / 2)
+                contexto.rotate(this.rotacao)
+                playerBloco.desenha(-this.largura / 2, -this.altura / 2)
+                contexto.restore()
             }
         }
 
@@ -209,7 +213,9 @@
             estadoAtual = estados.jogar
             
             imagem = new Image()
+            imgestrela = new Image()
             imagem.src = "../Image/sheet.png"
+            imgestrela.src = "../Image/estrela.png"
             roda()
         }
         main()
