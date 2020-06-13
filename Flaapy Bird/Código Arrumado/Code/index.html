@@ -2,12 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Minha engine</title>
+    <title>Flaapy Bird</title>
     <script src="scripts/canvas.js"></script>
     <script src="scripts/clique.js"></script>
     <script src="scripts/atualiza.js"></script>
     <script src="scripts/desenha.js"></script>
     <script src="scripts/passadefase.js"></script>
+    <script src="scripts/sprite.js"></script>
     <style>
         canvas {
             position: absolute;
@@ -22,7 +23,7 @@
 <body>
     <script>
         const MaxLevel = 7, MultiplicadoParaPassarFase = 5
-        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1
+        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1, imagem
         var LARGURA, ALTURA
 
         let estados = {
@@ -33,12 +34,20 @@
 
         let chao = {
             y: 550,
+            x: 0,
             altura: 50,
             cor: '#ffdf70',
 
-            desenha (){
-                contexto.fillStyle = this.cor
-                contexto.fillRect(0, this.y, LARGURA, this.altura)
+            atualiza(){
+                this.x -= velocidade
+                if(this.x <= -30){
+                    this.x += 30
+                }
+            },
+
+            desenha(){
+                spriteChao.desenha(this.x, this.y)
+                spriteChao.desenha(this.x + spriteChao.largura, this.y)
             }
         }
 
@@ -151,9 +160,9 @@
 
             reset(){
                 this._obs = []
-                this.distanciaTempoInste = 60
-                this.espacoobsrandom = 250
-                this.alturaobsrandom = 280
+                this.distanciaTempoInsere = 60
+                this.espacoObsRandom = 250
+                this.alturaObsRandom = 280
             },
 
             desenha(){
@@ -170,7 +179,6 @@
         function roda(){
             atualiza()
             desenha()
-            start()
 
             window.requestAnimationFrame(roda)
         }
@@ -200,6 +208,8 @@
             
             estadoAtual = estados.jogar
             
+            imagem = new Image()
+            imagem.src = "../Image/sheet.png"
             roda()
         }
         main()

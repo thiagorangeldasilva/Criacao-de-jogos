@@ -3,9 +3,9 @@ function clique(event){
         bloco.pular()
     }else if(estadoAtual == estados.jogar){
         estadoAtual = estados.jogando
-        reset()
     }else if(estadoAtual == estados.perdeu){
-        estadoAtual = estados.jogar
         reset()
+        estadoAtual = estados.jogar
+        
     }
 }
