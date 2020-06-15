@@ -5,7 +5,6 @@ function clique(event){
         estadoAtual = estados.jogando
     }else if(estadoAtual == estados.perdeu){
         reset()
-        estadoAtual = estados.jogar
-        
+        estadoAtual = estados.jogar   
     }
 }

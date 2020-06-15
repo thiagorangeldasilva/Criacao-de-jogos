@@ -8,7 +8,10 @@
     <script src="scripts/atualiza.js"></script>
     <script src="scripts/desenha.js"></script>
     <script src="scripts/passadefase.js"></script>
-    <script src="scripts/sprite.js"></script>
+    <script src="scripts/imagens.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/roda.js"></script>
+    <script src="scripts/reset.js"></script>
     <style>
         canvas {
             position: absolute;
@@ -23,7 +26,7 @@
 <body>
     <script>
         const MaxLevel = 7, MultiplicadoParaPassarFase = 5
-        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1, imagem, imgEstrela, imgGamerover
+        let canvas, contexto, frames = 0, velocidade = 3, estadoAtual, faseAtual = 1, imagem, imgEstrela, imgGamerover, imgFundo
         var LARGURA, ALTURA
 
         let estados = {
@@ -61,13 +64,17 @@
             forcaDoPulo: 5,
             rotacao: 0,
             score: 0,
-            vidas: 0,
+            vidas: 3,
             colindindo: false,
 
-            atualiza(){
+            andar(){
                 this.velocidade += this.gravidade
                 this.y += this.velocidade
                 this.rotacao += Math.PI / 180 * velocidade
+            },
+
+            atualiza(){
+                this.andar()
 
                 if(this.y > chao.y - this.altura){
                     this.y = chao.y - this.altura
@@ -85,7 +92,8 @@
                 this.y = chao.y / 2 - chao.altura / 2,
                 this.velocidade = 0
                 this.score = 0
-                this.vidas = 0
+                this.vidas = 3
+                this.rotacao = 0
             },
 
             desenha(){
@@ -177,46 +185,6 @@
                     contexto.fillRect(obs.x, 0, obs.largura, chao.y - (obs.altura + this.espacoObsRandom))
                 }
             }
-
-        }
-
-        function roda(){
-            atualiza()
-            desenha()
-
-            window.requestAnimationFrame(roda)
-        }
-
-        function reset(){
-            velocidade = 3
-            faseAtual = 1
-            bloco.reset()
-            obstaculo.reset()
-        }
-
-        function main(){
-            ALTURA = window.innerHeight
-            LARGURA = window.innerWidth
-
-            if (LARGURA >= 500) {
-				LARGURA = 600;
-				ALTURA = 600;
-            }
-
-            canvas = new configCanvas()
-
-            contexto = canvas.create.getContext("2d")
-            document.body.appendChild(canvas.create)
-
-            document.addEventListener("mousedown", clique)
-            
-            estadoAtual = estados.jogar
-            
-            imagem = new Image()
-            imgestrela = new Image()
-            imagem.src = "../Image/sheet.png"
-            imgestrela.src = "../Image/estrela.png"
-            roda()
         }
         main()
     </script>
