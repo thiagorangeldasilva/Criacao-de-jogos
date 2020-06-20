@@ -48,5 +48,5 @@ function Fundo(x, y, largura, altura, img) {
 
 let spriteChao = new Sprite(0, 604, 600, 54)
 let playerBloco = new Player(0, 0, 50, 50)
-let playerPerdeu = new Perdeu(0, 0, 200, 200)
+let playerPerdeu = new Perdeu(0, 0, 300, 300)
 let bg = new Fundo(0, 0, 600, 550)

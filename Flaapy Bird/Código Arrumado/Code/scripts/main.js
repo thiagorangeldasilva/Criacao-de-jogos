@@ -21,8 +21,8 @@ function main(){
     imgGamerover = new Image()
     imgFundo = new Image()
     imagem.src = "../Image/sheet.png"
-    imgEstrela.src = "../Image/estrela.png"
-    imgGamerover.src = "../Image/gamer-over.png"
+    imgEstrela.src = "../Image/bola.png"
+    imgGamerover.src = "../Image/gamer-over02.png"
     imgFundo.src = "../Image/fundo.png"
     roda()
 }
