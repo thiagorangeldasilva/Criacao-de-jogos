@@ -17,12 +17,6 @@ function main(){
     estadoAtual = estados.jogar
     
     imagem = new Image()
-    imgEstrela = new Image()
-    imgGamerover = new Image()
-    imgFundo = new Image()
-    imagem.src = "../Image/sheet.png"
-    imgEstrela.src = "../Image/bola.png"
-    imgGamerover.src = "../Image/gamer-over02.png"
-    imgFundo.src = "../Image/fundo.png"
+    imagem.src = "../Image/images.png"
     roda()
 }
