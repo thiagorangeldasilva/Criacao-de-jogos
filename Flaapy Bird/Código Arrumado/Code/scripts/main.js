@@ -15,6 +15,11 @@ function main(){
     document.addEventListener("mousedown", clique)
     
     estadoAtual = estados.jogar
+    record = localStorage.getItem("record")
+
+    if(record == null){
+        record = 0
+    }
     
     imagem = new Image()
     imagem.src = "../Image/images.png"
