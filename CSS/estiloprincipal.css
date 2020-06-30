@@ -1,0 +1,18 @@
+body{
+    background: #88bfe7;
+    font: normal 12pt Arial;
+}
+header{
+    background: white;
+    padding: 20px;
+    width: 1200px;
+    margin: auto;
+    color: #000000; 
+    text-align: center;
+}
+section{
+    background: #fff;
+    padding: 20px;
+    width: 1200px;
+    margin: auto;
+}
