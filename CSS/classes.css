@@ -1,0 +1,14 @@
+.play, .perdeu{
+    margin: 0px 100px 0px 100px;
+}
+.jogando{
+    margin: 0px 50px 0px 50px;
+}
+.titulo{
+    color: #000;
+    font: normal 15pt Arial;
+}
+.descricao{
+    color: #000;
+    font: normal 12pt Arial;
+}
