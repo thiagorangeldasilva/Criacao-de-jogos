@@ -3,5 +3,5 @@ function desenha(){
     contexto.fillRect(150, 0, 300, ALTURA)
 
     player.desenha()
-    //obstaculo.desenha()
+    obstaculo.desenha()
 }

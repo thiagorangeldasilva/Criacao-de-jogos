@@ -17,7 +17,16 @@
 </head>
 <body>
     <script>
-        var LARGURA, ALTURA, frames = 0, canvas, contexto, velocidade = 6
+        var LARGURA, ALTURA, frames = 0, canvas, contexto, velocidade = 6, estadoAtual
+
+        const estados = {
+            jogar: 0,
+            jogando: 1,
+            perdeu: 2
+        }
+
+        estadoAtual = estados.jogar
+
         main()
     </script>
 </body>

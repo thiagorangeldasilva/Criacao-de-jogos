@@ -1,5 +1,7 @@
 function atualiza(){
     frames++
-    player.atualiza()
-    //obstaculo.atualiza()
+    if(estadoAtual == estados.jogando){
+        player.atualiza()
+        obstaculo.atualiza()
+    }
 }

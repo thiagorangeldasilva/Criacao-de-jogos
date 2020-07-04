@@ -7,14 +7,21 @@ let player = {
     passo: 6.25,
     passoEsquerda: false,
     passoDireita: false,
+    colidindo: false,
 
     atualiza(){
-        if(this.passoDireita && this.x + this.passo <= (LARGURA - 150) - this.largura / 2){
-            this.x += this.passo
+        if(estadoAtual === estados.jogando){
+           if(this.passoDireita && this.x + this.passo <=   (LARGURA - 150) - this.largura / 2){
+                this.x += this.passo
+            }
+            if(this.passoEsquerda && this.x + this.passo >= 150 + this.largura){
+                this.x -= this.passo
+            } 
         }
-        if(this.passoEsquerda && this.x + this.passo >= 150 + this.largura){
-            this.x -= this.passo
-        }
+    },
+
+    reset(){
+        this.x = 300
     },
 
     desenha(){
@@ -40,6 +47,10 @@ let obstaculo = {
         this.tempoInsere = Math.floor(30 + Math.random() * 50)
     },
 
+    condicaoIFcolindindo(indice){
+        return this._obs[indice].altura + this._obs[indice].y > player.y && this._obs[indice].x < player.x + player.largura / 2 && this._obs[indice].x + this._obs[indice].largura > player.x - player.largura / 2 && this._obs[indice].altura + this._obs[indice].y < player.y + player.altura
+    },
+
     atualiza(){
         if(this.tempoInsere === 0){
             this.insere()
@@ -50,12 +61,20 @@ let obstaculo = {
         for(let i = 0, tam = this._obs.length; i < tam; i++){
             let obs = this._obs[i]
             obs.y += velocidade
-            if(obs.x <= -obs.largura){
+            console.log(player.colidindo)
+            if(this.condicaoIFcolindindo(i)){
+                console.log('Colidiu', player.colidindo)
+                estadoAtual = estados.perdeu
+            }else if(obs.y >= ALTURA){
                 this._obs.splice(i, 1)
                 tam--
                 i--
             }
         }
+    },
+
+    reset(){
+        this._obs = []
     },
 
     desenha(){
