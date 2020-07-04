@@ -5,21 +5,16 @@ let player = {
     largura: 25,
     cor: '#F00',
     passo: 8,
-    passoEsquerda: 0,
-    passoDireita: 0,
+    passoEsquerda: false,
+    passoDireita: false,
 
     atualiza(){
-        this.x += this.passoDireita - this.passoEsquerda
-        this.passoDireita = 0
-        this.passoEsquerda = 0        
-    },
-
-    Esquerda(){
-        this.passoEsquerda += this.passo
-    },
-
-    Direita(){
-        this.passoDireita += this.passo
+        if(this.passoDireita){
+            this.x += this.passo
+        }
+        if(this.passoEsquerda){
+            this.x -= this.passo
+        }
     },
 
     desenha(){
