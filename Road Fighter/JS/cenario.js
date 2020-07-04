@@ -48,7 +48,7 @@ let obstaculo = {
     },
 
     condicaoIFcolindindo(indice){
-        return this._obs[indice].altura + this._obs[indice].y > player.y && this._obs[indice].x < player.x + player.largura / 2 && this._obs[indice].x + this._obs[indice].largura > player.x - player.largura / 2 && this._obs[indice].altura + this._obs[indice].y < player.y + player.altura
+        return this._obs[indice].altura + this._obs[indice].y > player.y && this._obs[indice].x < player.x + player.largura / 2 && this._obs[indice].x + this._obs[indice].largura > player.x - player.largura / 2 && player.altura + this._obs[indice].y < player.y + player.altura
     },
 
     atualiza(){
