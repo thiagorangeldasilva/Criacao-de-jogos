@@ -1,5 +1,5 @@
 function atualiza(){
     frames++
     player.atualiza()
-    obstaculo.atualiza()
+    //obstaculo.atualiza()
 }

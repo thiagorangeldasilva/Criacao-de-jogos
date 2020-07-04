@@ -1,7 +1,7 @@
 function desenha(){
-    contexto.fillStyle = '#fff'
-    contexto.fillRect(0, 0, LARGURA, ALTURA)
+    contexto.fillStyle = '#00fff8'
+    contexto.fillRect(150, 0, 300, ALTURA)
 
     player.desenha()
-    obstaculo.desenha()
+    //obstaculo.desenha()
 }

@@ -4,15 +4,15 @@ let player = {
     altura: 25,
     largura: 25,
     cor: '#F00',
-    passo: 8,
+    passo: 6.25,
     passoEsquerda: false,
     passoDireita: false,
 
     atualiza(){
-        if(this.passoDireita){
+        if(this.passoDireita && this.x + this.passo <= (LARGURA - 150) - this.largura / 2){
             this.x += this.passo
         }
-        if(this.passoEsquerda){
+        if(this.passoEsquerda && this.x + this.passo >= 150 + this.largura){
             this.x -= this.passo
         }
     },
@@ -31,10 +31,10 @@ let obstaculo = {
 
     insere(){
         this._obs.push({
-            x: Math.floor(Math.random() * LARGURA),
+            x: Math.floor(150 + Math.random() * 260),
             y: 0,
-            largura: Math.floor(10 + Math.random() * 15),
-            altura: Math.floor(10 + Math.random() * 15),
+            largura: Math.floor(25 + Math.random() * 15),
+            altura: Math.floor(25 + Math.random() * 15),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
         this.tempoInsere = Math.floor(30 + Math.random() * 50)
