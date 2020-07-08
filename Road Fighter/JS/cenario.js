@@ -7,20 +7,41 @@ let player = {
     passo: 6.25,
     passoEsquerda: false,
     passoDireita: false,
+    acelera: false,
+    desacelera: false,
     colidindo: false,
+    gasolina: 1000,
+    score: 0,
+    _temporizador: false,
 
     atualiza(){
-        if(estadoAtual === estados.jogando){
-           if(this.passoDireita && this.x + this.passo <=   (LARGURA - 150) - this.largura / 2){
+        if(estadoAtual == estados.jogando){
+            if(this.passoDireita && this.x + this.passo <=   (LARGURA - 150) - this.largura / 2){
                 this.x += this.passo
             }
             if(this.passoEsquerda && this.x + this.passo >= 150 + this.largura){
                 this.x -= this.passo
+            }
+            if(this.acelera){
+                if(velocidade <= 8){
+                    velocidade++
+                }
+            }else{
+                if(velocidade > 0){
+                    velocidade--
+                }
             } 
+            if(this.desacelera){
+                if(velocidade > 0){
+                    velocidade -= 2
+                }
+            }
         }
     },
 
     reset(){
+        this.score = 0
+        this.gasolina = 1000
         this.x = 300
     },
 
@@ -44,7 +65,7 @@ let obstaculo = {
             altura: Math.floor(25 + Math.random() * 15),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
-        this.tempoInsere = Math.floor(30 + Math.random() * 50)
+        this.tempoInsere = Math.floor(30 + Math.random() * 150)
     },
 
     condicaoIFcolindindo(indice){
@@ -52,18 +73,26 @@ let obstaculo = {
     },
 
     atualiza(){
-        if(this.tempoInsere === 0){
-            this.insere()
-        }else{
-            this.tempoInsere--
+        if(velocidade !== 0){
+            if(this.tempoInsere === 0){
+                this.insere()
+            }else{
+                this.tempoInsere--
+            }
         }
 
         for(let i = 0, tam = this._obs.length; i < tam; i++){
             let obs = this._obs[i]
             obs.y += velocidade
-            console.log(player.colidindo)
+            if(!player._temporizador && velocidade !== 0){
+                player._temporizador = true
+                setTimeout(() => {
+                    player._temporizador = false
+                }, 2000)
+                player.score++
+                player.gasolina--
+            }
             if(this.condicaoIFcolindindo(i)){
-                console.log('Colidiu', player.colidindo)
                 estadoAtual = estados.perdeu
             }else if(obs.y >= ALTURA){
                 this._obs.splice(i, 1)
@@ -83,5 +112,15 @@ let obstaculo = {
             contexto.fillStyle = obs.cor
             contexto.fillRect(obs.x, obs.y, obs.largura, obs.altura)
         }
+    }
+}
+
+let texto = {
+    score(){
+        contexto.fillStyle ="#000"
+        contexto.font = "15px Verdana"
+        contexto.fillText(`Velocidade ${velocidade}`, 450, 400)
+        contexto.fillText(`Score ${player.score}`, 450, 300)
+        contexto.fillText(`Gasolina ${player.gasolina}`, 450, 200)
     }
 }
