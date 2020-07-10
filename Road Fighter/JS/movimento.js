@@ -10,30 +10,34 @@ function clique(event){
     }
 }
 function playerMover(event){
-    if(event.keyCode == 37 || event.keyCode == 65){
-        player.passoEsquerda = true
-    }
-    if(event.keyCode == 39 || event.keyCode == 68){
-        player.passoDireita = true       
-    }
-    if(event.keyCode == 38 || event.keyCode == 87){
-        player.acelera = true
-    }
-    if(event.keyCode == 40 || event.keyCode == 83){
-        player.desacelera = true
+    switch(event.keyCode){
+        case 37: case 65:
+            player.passoEsquerda = true
+            break
+        case 39: case 68:
+            player.passoDireita = true
+            break
+        case 38: case 87:
+            player.acelera = true
+            break
+        case 40: case 83:
+            player.desacelera = true
+            break
     }
 }
 function playerParar(event){
-    if(event.keyCode == 37 || event.keyCode == 65){
-        player.passoEsquerda = false
-    }
-    if(event.keyCode == 39 || event.keyCode == 68){
-        player.passoDireita = false        
-    }
-    if(event.keyCode == 38 || event.keyCode == 87){
-        player.acelera = false
-    }
-    if(event.keyCode == 40 || event.keyCode == 83){
-        player.desacelera = false
+    switch(event.keyCode){
+        case 37: case 65:
+            player.passoEsquerda = false
+            break
+        case 39: case 68:
+            player.passoDireita = false
+            break
+        case 38: case 87:
+            player.acelera = false
+            break
+        case 40: case 83:
+            player.desacelera = false
+            break
     }
 }   

@@ -12,7 +12,8 @@ let player = {
     colidindo: false,
     gasolina: 1000,
     score: 0,
-    _temporizador: false,
+    _score: false,
+    _gasolina: false,
 
     atualiza(){
         if(estadoAtual == estados.jogando){
@@ -32,9 +33,18 @@ let player = {
                 }
             } 
             if(this.desacelera){
-                if(velocidade > 0){
+                if(velocidade > 0 && velocidade - 2 >= 0){
                     velocidade -= 2
+                }else if(velocidade > 0){
+                    velocidade--
                 }
+            }
+            if(!this._gasolina){
+                this._gasolina = true
+                setTimeout(() => {
+                    player._gasolina = false
+                }, 2000)
+                this.gasolina--
             }
         }
     },
@@ -83,18 +93,22 @@ let obstaculo = {
 
         for(let i = 0, tam = this._obs.length; i < tam; i++){
             let obs = this._obs[i]
-            obs.y += velocidade
-            if(!player._temporizador && velocidade !== 0){
-                player._temporizador = true
+            if(velocidade !== 0){
+                obs.y += velocidade
+            }else{
+                obs.y -= 3
+            }
+            
+            if(!player._score && velocidade !== 0){
+                player._score = true
                 setTimeout(() => {
-                    player._temporizador = false
+                    player._score = false
                 }, 2000)
                 player.score++
-                player.gasolina--
             }
             if(this.condicaoIFcolindindo(i)){
                 estadoAtual = estados.perdeu
-            }else if(obs.y >= ALTURA){
+            }else if(obs.y < 0 || obs.y >= ALTURA){
                 this._obs.splice(i, 1)
                 tam--
                 i--
