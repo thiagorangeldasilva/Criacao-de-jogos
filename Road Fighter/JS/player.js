@@ -41,19 +41,22 @@ let player = {
                     velocidade -= 0.1
                 }   
             }
-            if(!this._gasolina){
-                this._gasolina = true
-                setTimeout(() => {
-                    player._gasolina = false
-                }, 1000)
-                if(player.gasolina > 0){
-                    if(velocidade === 0){
-                        this.gasolina -= 1
-                    }else if(velocidade <= 10){
-                        this.gasolina -= 2
-                    }else{
-                        this.gasolina -= 2.5
-                    }
+        }
+    },
+
+    atualizaGasolina(){
+        if(!player._gasolina){
+            player._gasolina = true
+            setTimeout(() => {
+                player._gasolina = false
+            }, 1000)
+            if(player.gasolina > 0){
+                if(velocidade === 0){
+                    player.gasolina -= 1
+                }else if(velocidade <= 10){
+                    player.gasolina -= 2
+                }else{
+                    player.gasolina -= 2.5
                 }
             }
         }

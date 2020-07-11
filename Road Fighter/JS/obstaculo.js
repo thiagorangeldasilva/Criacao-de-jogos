@@ -3,6 +3,8 @@ let obstaculo = {
     _score: false,
     cores: ["#ffbc1c", "#ff1c1c", "#ff85e1", "#52a7ff", "#78ff5d", "#000000"],
     tempoInsere: 0,
+    _tempoinsere: 150,
+    _gamerover: false,
 
     insere(){
         this._obs.push({
@@ -12,7 +14,7 @@ let obstaculo = {
             altura: Math.floor(25 + Math.random() * 15),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
-        this.tempoInsere = Math.floor(30 + Math.random() * 150)
+        this.tempoInsere = Math.floor(30 + Math.random() * this._tempoinsere)
     },
 
     condicaoIFcolindindo(indice){
@@ -25,6 +27,13 @@ let obstaculo = {
                 this.insere()
             }else{
                 this.tempoInsere--
+            }
+            if(velocidade < 10){
+                this._tempoinsere = 140
+            }else if(velocidade < 15){
+                this._tempoinsere = 130
+            }else{
+                this._tempoinsere = 120
             }
         }
 
@@ -43,10 +52,10 @@ let obstaculo = {
                 }, 2000)
                 player.score++
             }
-            if(this.condicaoIFcolindindo(i) && obs.cor !== "#000000" || player.gasolina === 0){
+            if(this.condicaoIFcolindindo(i) && obs.cor !== "#000000" /*|| player.x + player.passo <= (LARGURA - 150) - player.largura / 2 || player.x + player.passo >= 150 + player.largura */|| player.gasolina === 0){
                 if(player.gasolina > 0){
                     obstaculo._obs = []
-                    player.gasolina -= 3
+                    player.gasolina -= 7
                     velocidade = 0
                     player._atualiza = true
                     setTimeout(() => {
@@ -70,7 +79,8 @@ let obstaculo = {
     },
 
     reset(){
-        this._obs = []
+        this._obs = [],
+        this._tempoinsere = 150
     },
 
     desenha(){

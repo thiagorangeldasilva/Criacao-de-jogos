@@ -3,7 +3,7 @@ let progresso = {
     _distancia: false,
 
     atualiza(){
-        if(this.distancia >= 0 && velocidade > 0){    
+        if(this.distancia > 0 && velocidade > 0){    
             if(!this._distancia){
                 this._distancia = true
                 setTimeout(() => {

@@ -4,6 +4,7 @@ function atualiza(){
         if(!player._atualiza){
             player.atualiza()
         }
+        player.atualizaGasolina()
         obstaculo.atualiza()
         progresso.atualiza()
         velocidade = velocidade < 0 ? 0 : velocidade
