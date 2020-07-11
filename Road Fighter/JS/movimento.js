@@ -1,11 +1,9 @@
 function clique(event){
-    if(estadoAtual == estados.jogando){
-        
-    }else if(estadoAtual == estados.jogar){
+    if(estadoAtual == estados.jogar){
         estadoAtual = estados.jogando
     }else if(estadoAtual == estados.perdeu){
-        player.reset()
-        obstaculo.reset()
+        reset()
+        console.log(progresso.distancia)
         estadoAtual = estados.jogar   
     }
 }
