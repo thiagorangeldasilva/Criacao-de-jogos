@@ -3,8 +3,10 @@ let obstaculo = {
     _score: false,
     cores: ["#ffbc1c", "#ff1c1c", "#ff85e1", "#52a7ff", "#78ff5d", "#000000"],
     tempoInsere: 0,
+    insereMais: 0,
     _tempoinsere: 150,
     _gamerover: false,
+    _insereMais: false,
 
     insere(){
         this._obs.push({
@@ -14,7 +16,17 @@ let obstaculo = {
             altura: Math.floor(25 + Math.random() * 15),
             cor: this.cores[Math.floor(this.cores.length * Math.random())]
         })
-        this.tempoInsere = Math.floor(30 + Math.random() * this._tempoinsere)
+        this.inserirMais = Math.floor(Math.random() * 1)
+        if(this.inserirMais === 1 || this._insereMais){
+            this.tempoInsere = Math.floor(5 + Math.random() * this._tempoinsere)
+        }else if(this.inserirMais === 0 && !this._insereMais){
+            this._insereMais = true
+            setTimeout(() => {
+                obstaculo._insereMais = false
+            }, 2000)
+            this.tempoInsere = 0
+        }
+        
     },
 
     condicaoIFcolindindo(indice){
@@ -40,8 +52,8 @@ let obstaculo = {
         for(let i = 0, tam = this._obs.length; i < tam; i++){
             let obs = this._obs[i]
             if(velocidade !== 0){
-                obs.y += velocidade
-            }else{
+                obs.y += velocidade * 0.8
+            }else if(velocidade === 0 && this._obs.length > 0){
                 obs.y -= 3
             }
             
@@ -52,9 +64,11 @@ let obstaculo = {
                 }, 2000)
                 player.score++
             }
-            if(this.condicaoIFcolindindo(i) && obs.cor !== "#000000" /*|| player.x + player.passo <= (LARGURA - 150) - player.largura / 2 || player.x + player.passo >= 150 + player.largura */|| player.gasolina === 0){
+            if(this.condicaoIFcolindindo(i) && obs.cor !== "#000000" || player.gasolina === 0){
                 if(player.gasolina > 0){
-                    obstaculo._obs = []
+                    this._obs = []
+                    tam = 0
+                    i = 0
                     player.gasolina -= 7
                     velocidade = 0
                     player._atualiza = true

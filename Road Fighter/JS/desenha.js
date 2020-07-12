@@ -1,6 +1,5 @@
 function desenha(){
-    contexto.fillStyle = '#00fff8'
-    contexto.fillRect(150, 0, 300, ALTURA)
+    chao.desenha()
     contexto.fillStyle = '#fff'
     contexto.fillRect(0, 0, 150, ALTURA)
     contexto.fillRect(450, 0, 150, ALTURA)

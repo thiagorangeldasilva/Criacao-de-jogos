@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/Road Fighter/JS/atualiza.js"></script>
     <script src="/Road Fighter/JS/canvasConfig.js"></script>
+    <script src="/Road Fighter/JS/chao.js"></script>
     <script src="/Road Fighter/JS/desenha.js"></script>
     <script src="/Road Fighter/JS/eventos.js"></script>
+    <script src="/Road Fighter/JS/imagens.js"></script>
     <script src="/Road Fighter/JS/main.js"></script>
     <script src="/Road Fighter/JS/movimento.js"></script>
     <script src="/Road Fighter/JS/player.js"></script>
@@ -24,7 +26,7 @@
         <h1>O obstaculo preto é um bônus de gasolina e score</h1>
     </header>
     <script>
-        var LARGURA, ALTURA, frames = 0, canvas, contexto, velocidade = 0, estadoAtual
+        var LARGURA, ALTURA, frames = 0, canvas, contexto, velocidade = 0, estadoAtual, imagem
 
         const estados = {
             jogar: 0,

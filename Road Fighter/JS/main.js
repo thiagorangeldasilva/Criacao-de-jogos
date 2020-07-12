@@ -15,5 +15,8 @@ function main(){
 
         addEventos()
 
+        imagem = new Image()
+        imagem.src = "/Road Fighter/Images/pista.png"
+
         roda()
 }

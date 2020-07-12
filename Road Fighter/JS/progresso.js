@@ -11,6 +11,10 @@ let progresso = {
                 }, 250)
                 this.distancia--
             }
+        }else if(this.distancia === 0){
+            velocidade = 0
+            player.gasolina = 0
+            estadoAtual = estados.perdeu
         }
     },
 
