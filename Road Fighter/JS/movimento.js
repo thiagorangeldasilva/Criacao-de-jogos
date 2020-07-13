@@ -7,6 +7,12 @@ function clique(event){
         estadoAtual = estados.jogar   
     }
 }
+function jogar(event){
+    switch(event.keyCode){
+        case 32:
+            estadoAtual = estados.jogando
+    }
+}
 function playerMover(event){
     switch(event.keyCode){
         case 37: case 65:

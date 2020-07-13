@@ -14,7 +14,8 @@ let obstaculo = {
             y: 0,
             largura: Math.floor(25 + Math.random() * 15),
             altura: Math.floor(25 + Math.random() * 15),
-            cor: this.cores[Math.floor(this.cores.length * Math.random())]
+            cor: this.cores[Math.floor(this.cores.length * Math.random())],
+            _mudaposicao: Math.floor(150 + Math.random() * 300)
         })
         this.inserirMais = Math.floor(Math.random() * 1)
         if(this.inserirMais === 1 || this._insereMais){
@@ -26,7 +27,6 @@ let obstaculo = {
             }, 2000)
             this.tempoInsere = 0
         }
-        
     },
 
     condicaoIFcolindindo(indice){
@@ -56,6 +56,16 @@ let obstaculo = {
             }else if(velocidade === 0 && this._obs.length > 0){
                 obs.y -= 3
             }
+
+            if(obs.cor === "#78ff5d"){
+                if(obs.y > 100){
+                    if(obs.x > obs._mudaposicao && obs.x !== obs._mudaposicao){
+                        obs.x = obs.x - 3 < obs._mudaposicao? obs._mudaposicao : obs.x - 3
+                    }else if(obs.x < obs._mudaposicao && obs.x !== obs._mudaposicao){
+                        obs.x = obs.x + 3 > obs._mudaposicao? obs._mudaposicao : obs.x + 3
+                    }
+                }
+            }
             
             if(!player._score && velocidade > 3){
                 player._score = true
@@ -64,6 +74,7 @@ let obstaculo = {
                 }, 2000)
                 player.score++
             }
+
             if(this.condicaoIFcolindindo(i) && obs.cor !== "#000000" || player.gasolina === 0){
                 if(player.gasolina > 0){
                     this._obs = []
