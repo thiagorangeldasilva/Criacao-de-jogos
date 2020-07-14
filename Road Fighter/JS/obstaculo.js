@@ -13,7 +13,7 @@ let obstaculo = {
             y: 0,
             largura: Math.floor(25 + Math.random() * 15),
             altura: Math.floor(25 + Math.random() * 15),
-            cor: "#78ff5d" /*this.cores[Math.floor(this.cores.length * Math.random())]*/,
+            cor: this.cores[Math.floor(this.cores.length * Math.random())],
             _mudaposicao: Math.floor(150 + Math.random() * 260)
         })
         this.tempoInsere = Math.floor(40 + Math.random() * this._tempoinsere)
@@ -27,18 +27,10 @@ let obstaculo = {
         if(velocidade > 5){
             if(this.tempoInsere === 0){
                 this.insere()
-                console.log(this._obs[0].x, this._obs[0]._mudaposicao)
             }else{
                 this.tempoInsere--
             }
-
-            if(velocidade < 10){
-                this._tempoinsere = 140
-            }else if(velocidade < 15){
-                this._tempoinsere = 130
-            }else{
-                this._tempoinsere = 120
-            }
+            this._tempoinsere = TempoInsere(velocidade)
         }
         
         for(let i = 0, tam = this._obs.length; i < tam; i++){
@@ -62,15 +54,15 @@ let obstaculo = {
 
             if(this.condicaoIFcolindindo(i) && obs.cor !== "#000000" || player.gasolina === 0){
                 if(player.gasolina > 0){
+                    player._atualiza = true
+                    setTimeout(() => {
+                        player._atualiza = false
+                    }, 1000)
                     this._obs = []
                     tam = 0
                     i = 0
                     player.gasolina -= 7
                     velocidade = 0
-                    player._atualiza = true
-                    setTimeout(() => {
-                        player._atualiza = false
-                    }, 1000)
                 }else{
                     estadoAtual = estados.perdeu
                 }

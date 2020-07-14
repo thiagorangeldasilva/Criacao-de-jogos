@@ -8,7 +8,7 @@ function atualiza(){
         obstaculo.atualiza()
         progresso.atualiza()
         velocidade = velocidade < 0 ? 0 : velocidade
-        player.gasolina = player.gasolina < 0 ? 0 : player.gasolina
-        progresso.distancia = progresso.distancia < 0 ? 0 : progresso.distancia
+        player.gasolina = validação(player, "gasolina")
+        progresso.distancia = validação(progresso, "distancia")
     }
 }

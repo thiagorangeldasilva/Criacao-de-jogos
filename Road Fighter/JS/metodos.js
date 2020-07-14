@@ -38,15 +38,32 @@ const condicao = {
 
 function mudaPosicao(obstaculo, validacao, valorMudanca){
     if(obstaculo.cor === validacao){
-        console.log(valorMudanca, obstaculo.x, obstaculo)
-        if(obstaculo.y > 100){
+        if(obstaculo.y > 100 && obstaculo.x !== valorMudanca){
             if(obstaculo.x > valorMudanca){
                 return obstaculo.x - 3 < valorMudanca ? valorMudanca : obstaculo.x - 3 
             }else if(obstaculo.x < valorMudanca){
-                return obstaculo.x + 3 < valorMudanca ? valorMudanca : obstaculo.x + 3
+                return obstaculo.x + 3 > valorMudanca ? valorMudanca : obstaculo.x + 3
             } 
+        }else{
+            return obstaculo.x
         }
     }else if(obstaculo.cor !== validacao){
         return obstaculo.x
     }
+}
+
+function TempoInsere(velocidade){
+    if(velocidade < 7){
+        return 120
+    }else if(velocidade < 10){
+        return 100
+    }else if(velocidade < 12){
+        return 80
+    }else if(velocidade <= 16){
+        return 60
+    }
+}
+
+function validação(objeto, chave){
+    return objeto[chave] < 0 ? 0 : objeto[chave]
 }

@@ -60,6 +60,9 @@ let player = {
                 }
             }
         }
+        if(this.gasolina === 0){
+            estadoAtual = estados.perdeu
+        }
     },
 
     reset(){
