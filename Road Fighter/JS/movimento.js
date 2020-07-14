@@ -3,7 +3,6 @@ function clique(event){
         estadoAtual = estados.jogando
     }else if(estadoAtual == estados.perdeu){
         reset()
-        console.log(progresso.distancia)
         estadoAtual = estados.jogar   
     }
 }

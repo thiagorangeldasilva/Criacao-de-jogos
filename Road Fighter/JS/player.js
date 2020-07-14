@@ -26,7 +26,7 @@ let player = {
                 this.x -= this.passo
             }
             if(this.acelera){
-                if(velocidade <= 20){
+                if(velocidade <= 15){
                     velocidade += 0.1
                 }
             }else{
@@ -66,7 +66,6 @@ let player = {
         this.score = 0
         this.gasolina = 100
         this.x = 300
-        velocidade = 0
     },
 
     desenha(){
