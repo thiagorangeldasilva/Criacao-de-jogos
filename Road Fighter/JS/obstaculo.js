@@ -36,13 +36,15 @@ let obstaculo = {
         for(let i = 0, tam = this._obs.length; i < tam; i++){
             let obs = this._obs[i]
 
-            if(velocidade !== 0){
+            if(velocidade !== 0 && obs.cor !== "#78ff5d"){
                 obs.y += velocidade
+            }else if(velocidade !== 0 && obs.cor === "#78ff5d"){
+                obs.y += velocidade*0.7
             }else if(velocidade === 0 && this._obs.length > 0){
                 obs.y -= 3
             }
 
-            obs.x = mudaPosicao(obs, "#78ff5d", obs._mudaposicao)
+            obs.x = mudaPosicao(obs, "#78ff5d", obs._mudaposicao, Math.floor(Math.random() * 400 + 50))
 
             if(!player._score && velocidade > 3){
                 player._score = true

@@ -36,13 +36,13 @@ const condicao = {
     }
 }
 
-function mudaPosicao(obstaculo, validacao, valorMudanca){
+function mudaPosicao(obstaculo, validacao, valorMudanca, yMudanca){
     if(obstaculo.cor === validacao){
-        if(obstaculo.y > 100 && obstaculo.x !== valorMudanca){
+        if(obstaculo.y > yMudanca && obstaculo.x !== valorMudanca){
             if(obstaculo.x > valorMudanca){
-                return obstaculo.x - 3 < valorMudanca ? valorMudanca : obstaculo.x - 3 
+                return obstaculo.x - 8 < valorMudanca ? valorMudanca : obstaculo.x - 8 
             }else if(obstaculo.x < valorMudanca){
-                return obstaculo.x + 3 > valorMudanca ? valorMudanca : obstaculo.x + 3
+                return obstaculo.x + 8 > valorMudanca ? valorMudanca : obstaculo.x + 8
             } 
         }else{
             return obstaculo.x
