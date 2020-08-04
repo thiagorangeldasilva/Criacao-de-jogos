@@ -16,7 +16,7 @@ function main(){
         addEventos()
 
         imagem = new Image()
-        imagem.src = "./Images/pista.png"
+        imagem.src = "../Images/pista.png"
 
         roda()
 }
