@@ -6,17 +6,31 @@ let obstaculo = {
     insereMais: 0,
     _tempoinsere: 150,
     _gamerover: false,
+    _insereMais: false,
 
     insere(){
+        let xRandom = Math.floor(150 + Math.random() * 260) 
+        if(this._obs.length > 0){
+            xRandom = validareixoX(xRandom, this._obs[0])
+        }
         this._obs.push({
-            x: Math.floor(150 + Math.random() * 260),
+            x: xRandom,
             y: 0,
             largura: Math.floor(25 + Math.random() * 15),
             altura: Math.floor(25 + Math.random() * 15),
             cor: this.cores[Math.floor(this.cores.length * Math.random())],
             _mudaposicao: Math.floor(150 + Math.random() * 260)
         })
-        this.tempoInsere = Math.floor(40 + Math.random() * this._tempoinsere)
+        this.inserirMais = Math.floor(Math.random() * 1)
+        if(this.inserirMais === 1 || this._insereMais){
+            this.tempoInsere = Math.floor(5 + Math.random() * this._tempoinsere)
+        }else if(this.inserirMais === 0 && !this._insereMais){
+            this._insereMais = true
+            setTimeout(() => {
+                obstaculo._insereMais = false
+            }, 2000)
+            this.tempoInsere = 0
+        }
     },
 
     condicaoIFcolindindo(indice){
