@@ -85,3 +85,11 @@ function validareixoX(xRandom, obs){
         }
     }
 }
+
+function validareixoY(eixoY, obs, eixoX){
+    if(eixoY + 40 < obs.y &&  eixoX < obs.x + obs.largura && eixoX + 40 > obs.x){
+        return eixoY - 40
+    }else{
+        return eixoY
+    }
+}

@@ -9,13 +9,17 @@ let obstaculo = {
     _insereMais: false,
 
     insere(){
-        let xRandom = Math.floor(150 + Math.random() * 260) 
+        let xRandom = Math.floor(150 + Math.random() * 260)
+        let yValide = 0
         if(this._obs.length > 0){
-            xRandom = validareixoX(xRandom, this._obs[0])
+            for(let e in obstaculo._obs){
+                xRandom = validareixoX(xRandom, this._obs[e])
+                yValide = validareixoY(yValide, this._obs[e], xRandom)
+            }
         }
         this._obs.push({
             x: xRandom,
-            y: 0,
+            y: yValide,
             largura: Math.floor(25 + Math.random() * 15),
             altura: Math.floor(25 + Math.random() * 15),
             cor: this.cores[Math.floor(this.cores.length * Math.random())],
